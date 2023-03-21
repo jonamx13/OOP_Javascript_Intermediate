@@ -1,4 +1,4 @@
-/* const obj1 = {
+ const obj1 = {
     a: 'a',
     b: 'b',
     c: {
@@ -10,33 +10,41 @@
     }
 };
 
-//JSON.parse & JSON.stringify
-const stringifiedComplexObj = JSON.stringify(obj1);
-const obj2 = JSON.parse(stringifiedComplexObj);
+function isObject(subject) {
+    return typeof subject == 'object';
+}
 
-// it doesn't work with methods */
+function isArray(subject) {
+    return Array.isArray(subject);
+}
 
-// function recursive() {
-//     if(/* validation */) {  
-//     // recursive callbacks
-//     } else {
-//     // normal calls, non-recursive
-//     }
-// }
+function deepCopy(subject) {
+    let copySubject;
 
-const numbers = [1,2,3,4,5,6,7,8,9,376873,32,46,3,6,7];
-// let number = 0;
-// for(let index = 0; index < numbers.length; index++) {
-//     number = numbers[index];
-//     console.log({index,number});
-// }
+    const subjectIsArray = isArray(subject);
+    const subjectIsObject = isObject(subject);
 
-function recursive(numbersArray) {
-    if (numbersArray.length != 0) {
-        const firstNum = numbersArray[0];
-        console.log(firstNum);
-
-        numbersArray.shift();
-        recursive(numbersArray);
+    if(subjectIsArray) {
+        copySubject = [];
+    } else if (subjectIsObject) {
+        copySubject = {};
+    } else {
+        return subject;
     }
+
+    for (key in subject) { 
+        const keyIsObject = isObject(subject[key]);
+
+        if (keyIsObject) {
+            // copySubject[key] = deepCopy(subject[key]);
+        } else {
+            if (subjectIsArray) {
+                copySubject.push(subject[key]);
+            } else {
+                copySubject[key] = subject[key];
+            }
+        }
+    } 
+
+    return copySubject;
 }
