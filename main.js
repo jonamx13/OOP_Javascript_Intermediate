@@ -36,7 +36,7 @@ function deepCopy(subject) {
         const keyIsObject = isObject(subject[key]);
 
         if (keyIsObject) {
-            // copySubject[key] = deepCopy(subject[key]);
+            copySubject[key] = deepCopy(subject[key]);
         } else {
             if (subjectIsArray) {
                 copySubject.push(subject[key]);
