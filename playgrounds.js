@@ -9,7 +9,7 @@
 
 */
 
-const jona = {
+const jonaPlayGRDS = {
     name: "Jonathan",
     approvedCourses: ['Course 1','Course 2'],
     characteristics: {
@@ -30,12 +30,12 @@ const jona = {
   function deepFreeze(obj) {
     if (typeof obj != 'object') return obj;
 
-    Object.freeze(obj)
+    Object.freeze(obj);
 
     for(key in obj) {
-        deepFreeze(obj[key])
+        deepFreeze(obj[key]);
     }
 
-    return obj
+    return obj;
 
   }
