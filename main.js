@@ -64,10 +64,12 @@ function createStudent({ // RORO (Receive Object - Return Object)
     facebook,
     approvedCourses = [],
     learningPaths = [],
-} = []) { // By default we are getting an empty object
+} = {}) { // By default we are getting an empty object
+    const private = {
+        '_name': name,
+    };
 
-    return {
-        name,
+    const public = {
         email,
         age,
         approvedCourses,
@@ -76,9 +78,29 @@ function createStudent({ // RORO (Receive Object - Return Object)
             twitter,
             instagram,
             facebook,
-        }
-    }
+        },
+
+        readName() {
+            return private['_name'];
+        },
+        changeName(newName) {
+            private['_name'] = newName;
+        },
+    };
+
+    Object.defineProperties(public, {
+        readName: {
+            configurable: false,
+            writable: false,
+        },
+        changeName: {
+            configurable: false,
+            writable: false,
+        },
+    });
+
+    return public;
 }
 
 // Factory Pattern
-const jona = createStudent({ email: 'jona@than',name: 'Jonathan'});
+const jona = createStudent({ email: 'jona@than', name: 'Jonathan' });
