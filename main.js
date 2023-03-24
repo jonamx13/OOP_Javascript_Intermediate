@@ -43,39 +43,17 @@ function requiredParam(param) {
     throw new Error(`${param} is required`);
 }
 
-function createLearningPath({
+function LearningPath({
     name = requiredParam('name'),
     courses = [],
     
 }) {
-    const private = {
-        '_name': name,
-        '_courses': courses,
 
-    };
-
-    const public = {
-        get name() {
-            return private['_name'];
-        },
-
-        set name(newName) {
-            if (newName.length != 0) {
-                private['_name'] = newName;
-            } else {
-                console.warn('Your name must have at least 1 character')
-            }
-        },
-
-        get courses() {
-            return private['_courses'];
-        }
-    };
-
-    return public;
+    this.name = name;
+    this.courses = courses;
 };
 
-function createStudent({ // RORO (Receive Object - Return Object)
+function Student({ // RORO (Receive Object - Return Object)
     name = requiredParam('name'),
     email = requiredParam('email'),
     age,
@@ -85,59 +63,95 @@ function createStudent({ // RORO (Receive Object - Return Object)
     approvedCourses = [],
     learningPaths = [],
 } = {}) { // By default we are getting an empty object
-    const private = {
-        '_name': name,
-        '_learningPaths': learningPaths,
+    this.name = name;
+    this.email = email;
+    this.age = age;
+    this.approvedCourses = approvedCourses;
+    this.socialMedia = {
+        twitter,
+        instagram,
+        facebook,
     };
 
-    const public = {
-        email,
-        age,
-        approvedCourses,
-        socialMedia: {
-            twitter,
-            instagram,
-            facebook,
-        },
+    if(isArray(learningPaths)) {
+        this.learningPaths = [];
 
-        get name() {
-            return private['_name'];
-        },
-        set name(newName) {
-            if (newName.length != 0) {
-                private['_name'] = newName;
-            } else {
-                console.warn('Your name must have at least 1 character')
-            }
-        },
+        
+        for (learningPathIndex in learningPaths) {
 
-        get learningPaths() {
-            return private['_learningPaths'];
-        },
-        set learningPaths(newLP) {
-            if(!newLP.name) {
-                console.warn('Your new LP has not a \"name\" property');
-                return;
-            }
+            if(learningPaths[learningPathIndex] instanceof LearningPath) {
+                console.log(learningPaths[learningPathIndex]);
 
-            if(!newLP.courses) {
-                console.warn('Your new LP has no courses');
-                return;
-            }
+                this.learningPaths.push(learningPaths[learningPathIndex]);
+            } // if end
+        } // for end
+    } // if end
 
-            if(!isArray(newLP.courses)) {
-                console.warn('Your new LP is not a courses list');
-                return;
-            }
+    // const private = {
+    //     '_name': name,
+    //     '_learningPaths': learningPaths,
+    // };
 
-            private['_learningPaths'].push(newLP);
-        },
-    };
+    // const public = {
+    //     email,
+    //     age,
+    //     approvedCourses,
+    //     socialMedia: {
+    //         twitter,
+    //         instagram,
+    //         facebook,
+    //     },
 
+    //     get name() {
+    //         return private['_name'];
+    //     },
+    //     set name(newName) {
+    //         if (newName.length != 0) {
+    //             private['_name'] = newName;
+    //         } else {
+    //             console.warn('Your name must have at least 1 character')
+    //         }
+    //     },
 
+    //     get learningPaths() {
+    //         return private['_learningPaths'];
+    //     },
+    //     set learningPaths(newLP) {
+    //         if(!newLP.name) {
+    //             console.warn('Your new LP has not a \"name\" property');
+    //             return;
+    //         }
 
-    return public;
+    //         if(!newLP.courses) {
+    //             console.warn('Your new LP has no courses');
+    //             return;
+    //         }
+
+    //         if(!isArray(newLP.courses)) {
+    //             console.warn('Your new LP is not a courses list');
+    //             return;
+    //         }
+
+    //         private['_learningPaths'].push(newLP);
+    //     },
+    // };
+
+    // return public;
 }
 
 // Factory Pattern
-const jona = createStudent({ email: 'jona@than', name: 'Jonathan' });
+const webDevSchool = new LearningPath({ name: 'Web Development School', courses: []});
+const dataScienceSchool = new LearningPath({ name: 'Data Science School', courses: []});
+
+const jona = new Student({ 
+    email: 'jona@than.com',
+    name: 'Jonathan',
+    learningPaths: [
+        webDevSchool,
+        dataScienceSchool,
+        {
+            name: 'fakeSchool',
+            courses: [],
+        }
+    ]
+});
