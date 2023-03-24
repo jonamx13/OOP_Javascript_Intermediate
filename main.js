@@ -38,22 +38,47 @@ function deepCopy(subject) {
     return copySubject;
 }
 
-const studentBase = {
-    name: undefined,
-    email: undefined,
-    age: undefined,
-    approvedCourses: undefined,
-    learningPaths: undefined,
-    socialMedia: {
-        twitter: undefined,
-        instagram: undefined,
-        facebook: undefined,
-    },
-};
+// const studentBase = {
+//     name: undefined,
+//     email: undefined,
+//     age: undefined,
+//     approvedCourses: undefined,
+//     learningPaths: undefined,
+//     socialMedia: {
+//         twitter: undefined,
+//         instagram: undefined,
+//         facebook: undefined,
+//     },
+// };
 
+function requiredParam(param) {
+    throw new Error(`${param} is required`);
+}
 
-const jona = deepCopy(studentBase);
-Object.seal(jona);
+function createStudent({ // RORO (Receive Object - Return Object)
+    name = requiredParam('name'),
+    email = requiredParam('email'),
+    age,
+    twitter,
+    instagram,
+    facebook,
+    approvedCourses = [],
+    learningPaths = [],
+} = []) { // By default we are getting an empty object
 
+    return {
+        name,
+        email,
+        age,
+        approvedCourses,
+        learningPaths,
+        socialMedia: {
+            twitter,
+            instagram,
+            facebook,
+        }
+    }
+}
 
-// jona.name = 'Jonathan';
+// Factory Pattern
+const jona = createStudent({ email: 'jona@than',name: 'Jonathan'});
