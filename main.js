@@ -80,15 +80,25 @@ function createStudent({ // RORO (Receive Object - Return Object)
             facebook,
         },
 
-        readName() {
+        get name() {
             return private['_name'];
         },
-        changeName(newName) {
-            private['_name'] = newName;
-        },
+        set name(newName) {
+            if (newName.length != 0) {
+                private['_name'] = newName;
+            } else {
+                console.warn('Your name must have at least 1 character')
+            }
+        }
+        // readName() {
+        //     return private['_name'];
+        // },
+        // changeName(newName) {
+        //     private['_name'] = newName;
+        // },
     };
 
-    Object.defineProperties(public, {
+    /* Object.defineProperties(public, {
         readName: {
             configurable: false,
             writable: false,
@@ -97,7 +107,7 @@ function createStudent({ // RORO (Receive Object - Return Object)
             configurable: false,
             writable: false,
         },
-    });
+    }); */
 
     return public;
 }
