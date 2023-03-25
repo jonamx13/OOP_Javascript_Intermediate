@@ -73,71 +73,29 @@ function Student({ // RORO (Receive Object - Return Object)
         facebook,
     };
 
-    if(isArray(learningPaths)) {
-        this.learningPaths = [];
+    const private = {
+        '_learningPaths': [],
+    }
 
-        
-        for (learningPathIndex in learningPaths) {
+    Object.defineProperty(this, 'learningPaths', {
+        get() {
+            return private['_learningPaths'];
+        },
+        set(newLP) {
+            if(newLP instanceof LearningPath) {
+                private['_learningPaths'].push(newLP);
+            } else {
+                console.warn('Some of the LP\'s are not an instance of the prototype LearningPath');
+            }
+        },
+    });
 
-            if(learningPaths[learningPathIndex] instanceof LearningPath) {
-                console.log(learningPaths[learningPathIndex]);
 
-                this.learningPaths.push(learningPaths[learningPathIndex]);
-            } // if end
-        } // for end
-    } // if end
-
-    // const private = {
-    //     '_name': name,
-    //     '_learningPaths': learningPaths,
-    // };
-
-    // const public = {
-    //     email,
-    //     age,
-    //     approvedCourses,
-    //     socialMedia: {
-    //         twitter,
-    //         instagram,
-    //         facebook,
-    //     },
-
-    //     get name() {
-    //         return private['_name'];
-    //     },
-    //     set name(newName) {
-    //         if (newName.length != 0) {
-    //             private['_name'] = newName;
-    //         } else {
-    //             console.warn('Your name must have at least 1 character')
-    //         }
-    //     },
-
-    //     get learningPaths() {
-    //         return private['_learningPaths'];
-    //     },
-    //     set learningPaths(newLP) {
-    //         if(!newLP.name) {
-    //             console.warn('Your new LP has not a \"name\" property');
-    //             return;
-    //         }
-
-    //         if(!newLP.courses) {
-    //             console.warn('Your new LP has no courses');
-    //             return;
-    //         }
-
-    //         if(!isArray(newLP.courses)) {
-    //             console.warn('Your new LP is not a courses list');
-    //             return;
-    //         }
-
-    //         private['_learningPaths'].push(newLP);
-    //     },
-    // };
-
-    // return public;
+    for (learningPathIndex in learningPaths) {
+        this.learningPaths = learningPaths[learningPathIndex];
+    }
 }
+
 
 // Factory Pattern
 const webDevSchool = new LearningPath({ name: 'Web Development School', courses: []});
